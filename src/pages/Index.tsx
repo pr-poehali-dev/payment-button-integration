@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
@@ -69,6 +69,47 @@ const Index = () => {
     }
   });
 
+  useEffect(() => {
+    createStars();
+    createParticles();
+  }, []);
+
+  const createStars = () => {
+    const container = document.getElementById('stars-container');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    for (let i = 0; i < 200; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      const size = Math.random() * 3;
+      star.style.width = `${size}px`;
+      star.style.height = `${size}px`;
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.animationDelay = `${Math.random() * 3}s`;
+      container.appendChild(star);
+    }
+  };
+
+  const createParticles = () => {
+    const container = document.getElementById('particles-container');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    for (let i = 0; i < 50; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      const size = Math.random() * 5 + 1;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.animationDelay = `${Math.random() * 20}s`;
+      particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+      container.appendChild(particle);
+    }
+  };
+
   const emojisPerPage = 24;
   const totalIncome = Object.values(matrixData.levels).reduce((sum, level) => sum + level.income, 0);
 
@@ -128,9 +169,14 @@ const Index = () => {
   const currentLevelData = matrixData.levels[currentLevel];
 
   return (
-    <div className="min-h-screen bg-black text-white p-4 md:p-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr_300px] gap-5">
+    <>
+      <div className="cosmic-bg" />
+      <div id="stars-container" className="stars-container" />
+      <div id="particles-container" className="particles-container" />
+      
+      <div className="min-h-screen text-white p-4 md:p-5 relative z-10">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr_300px] gap-5">
           
           {/* LEFT PANEL - PROFILE */}
           <Card className="p-6 bg-gradient-to-br from-purple-900/20 to-black border-purple-500/30 hover-scale">
@@ -494,7 +540,8 @@ const Index = () => {
           </Card>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 };
 
